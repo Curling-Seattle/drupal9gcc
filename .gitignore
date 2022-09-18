@@ -1,0 +1,28 @@
+# Ignore configuration files that may contain sensitive information.
+sites/*/settings*.php
+sites/*/services*.yml
+
+# Ignore paths that contain user-generated content.
+# sites/*/private
+
+# Ignore PHPStorm files
+.idea/*
+
+tmp/*
+*.dsk
+*.idx
+*.ppx*
+*.ppw
+*.ppj
+/.vs
+*.$wrk
+*~
+.DS_Store
+
+
+# Ignore gzipped sql files so we don't accidentally commit a database to the git repo
+*.sql.gz
+*.sql
+
+# Don't commit env files
+.env

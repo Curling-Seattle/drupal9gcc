@@ -1,0 +1,35 @@
+services:
+  mysql:
+    image: mysql
+    container_name: curlingseattle9-db
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "${GCC_MYSQL_PORT:-3306}:3306"
+    env_file:
+      - .env
+    networks:
+      - app-network
+    volumes:
+      - ./.docker/db-load:/docker-entrypoint-initdb.d
+      - mysqldata9:/var/lib/mysql
+  webserver:
+    image: drupal
+    container_name: curlingseattle9-webserver
+    working_dir: /var/www/html
+    ports:
+      - "${GCC_WEBSITE_PORT:-8999}:80"
+    env_file:
+      - .env
+    volumes:
+      - ./webroot/sites:/opt/drupal/web/sites
+      - ./.docker/drupal.ini:/usr/local/etc/php/conf.d/drupal.ini
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysqldata9:

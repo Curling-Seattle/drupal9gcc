@@ -23,3 +23,5 @@ After cloning this repo
 This will take significantly more time the first time it is run.
 
 4. Browse http://localhost:8999
+
+The Drupal initialization screens should appear and let you name the site and create an admin user account.

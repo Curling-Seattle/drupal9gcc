@@ -21,6 +21,17 @@ After cloning this repo
 `docker-compose up`
 
 This will take significantly more time the first time it is run.
+The database will be initialized with an empty Drupal 9 structure.  The database will have a `root` and `gccsqluser` account created.
+The `gccsqluser` password is defined in the `.env` file.
+The `root` account gets a random password. In the stream of messages that docker prints out, it will show you the root password.  Look for
+a sequence of lines like these:
+
+```
+curlingseattle9-db         | 2022-09-18 21:51:35+00:00 [Note] [Entrypoint]: GENERATED ROOT PASSWORD: /8ICe0JWKczLahqbUSD9vpUqUo/FudK8
+curlingseattle9-db         | 2022-09-18 21:51:35+00:00 [Note] [Entrypoint]: Creating database drupal9gcc
+curlingseattle9-db         | 2022-09-18 21:51:35+00:00 [Note] [Entrypoint]: Creating user gccsqluser
+curlingseattle9-db         | 2022-09-18 21:51:35+00:00 [Note] [Entrypoint]: Giving user gccsqluser access to schema drupal9gcc
+```
 
 4. Browse http://localhost:8999
 

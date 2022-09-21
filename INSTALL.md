@@ -40,12 +40,66 @@ curlingseattle9-db         | 2022-09-18 21:51:35+00:00 [Note] [Entrypoint]: Crea
 curlingseattle9-db         | 2022-09-18 21:51:35+00:00 [Note] [Entrypoint]: Giving user gccsqluser access to schema drupal9gcc
 ```
 
-It's a good idea to copy the generated root password into your `.env` file for
-later use.  The `.env` is ignored by git and will not be stored in the
-public repository.
+It's a good idea to copy the generated root password into your `.env`
+file for later use.  There's a placeholder for it in the
+`GCC_MYSQL_ROOT_PASSWORD` variable.  The `.env` is ignored by git and
+will not be stored in the public repository.
 
 4. Browse http://localhost:8999
 
 You should see the initial adminstrative screen for a Drupal 9 instance.
+(Note you can change the port number used on your local machine by
+editing the `GCC_WEBSITE_PORT` variable in the `.env` file before running
+`docker-compose up`).
+
+5. Set up the admin user password
+
+You can either select Menu > My Account > Edit or browse
+http://localhost:8999/user/1/edit In the form, you can change the
+admin account's password to something you'll remember.  The password
+was initialized to `slowplaysucks` and you'll need that to make your
+update.  Press the Save button at the bottom of the form.
+
+6. Enable the Next.js modules
+
+Browse http://localhost:8999/admin/modules to find all the current
+modules and whether they are enabled or not.  Scroll down near the
+bottom to find the Web services section and enable the `Next.js` and
+`Next.js JSON:API` services.  Press the Install button at the bottom
+of the form. It will ask you to confirm enabling some dependencies.
+Approve those by pressing the Continue button. This will take a
+little while to process.  You should get the same page of modules
+listed with the Next.js and dependencies now enabled.
+
+7. Configure a path alias for Next.js 
+
+Follow the instructions starting at
+https://next-drupal.org/learn/quick-start/configure-path-aliases
+(we've already done the preceding steps in the Docker image).
+Where it says "Visit /admin/config/search/path/patterns/add", browse
+http://localhost:8999/admin/config/search/path/patterns/add
+
+8. Create the Next.js project
+
+This is the next step after configuring a path alias,
+https://next-drupal.org/learn/quick-start/create-nexts-project.  You
+need to execute this command in the running Docker image.  If you use
+Docker Desktop, find the `drupal9gcc` parent container and the
+`curlingseattle9-webserver` within it.  In the ACTIONS column, click
+on the vertical ellipsis symbol (looks a bit like ☰) and use the Open
+in terminal function to bring up a command line interpreter.  When you
+run `npx create-next-app -e
+https://github.com/chapter-three/next-drupal-basic-starter`, it will
+ask you to confirm the installation of the create-next-app package.
+
+
+
+
+
+
+
+
+
+
 
 

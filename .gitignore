@@ -26,3 +26,6 @@ tmp/*
 
 # Don't commit env files
 .env
+
+# Avoid auto-generated files from Drupal activity
+webroot/sites/default/files

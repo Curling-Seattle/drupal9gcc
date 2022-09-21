@@ -14,7 +14,7 @@ services:
       - ./.docker/db-load:/docker-entrypoint-initdb.d
       - mysqldata9:/var/lib/mysql
   webserver:
-    image: drupal
+    image: drupalnextjs
     container_name: curlingseattle9-webserver
     working_dir: /var/www/html
     ports:
@@ -22,7 +22,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./webroot/sites:/opt/drupal/web/sites
+      - ./webroot:/opt/drupal/web
       - ./.docker/drupal.ini:/usr/local/etc/php/conf.d/drupal.ini
     networks:
       - app-network

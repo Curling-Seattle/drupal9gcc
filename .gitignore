@@ -28,4 +28,4 @@ tmp/*
 .env
 
 # Avoid auto-generated files from Drupal activity
-webroot/sites/default/files
+drupalwebroot/sites/default/files

@@ -50,15 +50,66 @@ file.
 For security, you should change the passwords for those accounts on your
 develpment machine.
 
-7. Browse the Drupal website, http://localhost:8999
+7. Initialize the Drupal system
 
-You should see the initial adminstrative screen for a Drupal 9 instance.
-(Note you can change the port number used on your local machine by
-editing the `GCC_WEBSITE_PORT` variable in the `.env` file before running
-`docker-compose up`).
+In the Docker Desktop, select Containers in the left-hand panel and
+find the `drupal9gcc` container. This should be a 'folder' that holds
+the two containers: `curlingseattle9-db` and `drupal9-next`. Selecting
+the small arrow ˃ next to the name opens and closes the folder. In the row
+for the  `drupal9-next` container, select the 3-dot icon in the 'ACTIONS'
+column to open a menu of operations. Select the "Open in terminal" action.
+This should change the display to a command line terminal. The prompt 
+should be `# ` to indicate you are the root user. If you like a bit more
+context, you can enter `bash` which changes the prompt to something like:
+`root@e45652ec6bcf:/opt/drupal/web# `. That shows that you are the root
+user on the `e45652ec6bcf` container and your directory is
+`/opt/drupal/web`. Regardless of the prompt enter the following commands:
 
-8. Set up the Drupal admin user password
+`cd /opt/drupal`
+`composer update "drupal/core-*" --with-all-dependencies`
 
+This will take a few minutes to load a bunch of Drupal code into
+the docker image and verify it.  The last line should be:
+`No security vulnerability advisories found`
+Open a browswer window to see the Drupal website, http://localhost:8999. 
+
+8. Connect the database
+
+On the localhost:8999 web page, you should see the initial
+adminstrative screen for a Drupal 9 instance.  The webpage walks you
+through a series of steps to configure the site. Configure the
+language as English and the profile as Standard. On the 'Set up
+database' step, leave the database type as MySQL. Fill in the databse
+name, username, and password from the values in the `.env` file that
+you edited in an earlier step. These come from the MYSQL_DATABASE,
+MYSQL_USER, and MYSQL_PASSWORD variables.  Select the 'ADVANCED
+OPTIONS` section and fill in the host from the MYSQL_HOST variable
+(don't use 'localhost'). Select 'Save and Continue'.
+
+At this point, you'll either get an error that Drupal could not
+connect to the database or a message that says 'Drupal already
+installed'. The latter means you are successful and can select 'View
+your existing site' to continue.  If you get the database error, check
+the values you entered for the database connection carefully. Any
+errors here will prevent using the pre-configured database. After
+correcting, try again.
+
+9. Install the next.js modules
+
+Go back to the Docker Desktop and specifically to the command line
+terminal for the `drupal9-next` container. Run the following command:
+
+`composer require drupal/next`
+
+It will ask if you trust "cweagans/composer-patches" to execute code.
+Answer yes. It may warn about some abandoned packages, which you can
+safely ignore. It should end with the message 
+`No security vulnerability advisories found`
+like the previous composer command did.
+
+10. Set up the Drupal admin user password
+
+Return to the localhost:8999 web page.
 Select Menu > Login, and login as the Drupal admin user.  The initial
 password for the admin account was set to `slowplaysucks`.  To update
 the password, select My Account > Edit or browse
@@ -66,14 +117,36 @@ http://localhost:8999/user/1/edit . In the form, you can change the
 admin account's password to something more convenient.  Press the Save
 button at the bottom of the form.
 
-9. The Drupal instance has already been configured with the Next.js
-and Next.js JSON:API modules. You can verify this by visiting
-http://localhost:8999/admin/modules and entering 'next' in the Filter box.
-An `Article` content type has been configured in Drupal so that the
-next.js app can find it. You can verify its settings by visiting
-http://localhost:8888/admin/config/search/path/patterns .
+11. Enable the Next.js modules
 
-10. Start up the local webserver running the next.js app
+Visit the page the Drupal modules page at
+http://localhost:8999/admin/modules (or Go to Extend > List in the
+menus). If the Filter box appears near the top, entering 'next' in it.
+Otherwise, scroll down to find the "Next.js" and "Next.js JSON:API"
+modules.  Select the checkboxes next to them, scroll all the way to
+the bottom of the page, and select "Install". The system should prompt
+you that some required modules must be enabled. Select
+"Continue". This can take a few minutes, but you should get a message
+saying the 2 Next.js modules plus some others were enabled.
+
+12. Configure an Article content type
+
+Visit http://localhost:8999/admin/config/search/path/patterns (or use
+the menus Configuration > Search and metadata > URL aliases > Patterns).
+Select '+ Add Pathauto pattern'. Add the following patern:
+
+  - Pattern type: Content
+  - Path pattern: blog/[node:title]
+  - Content type: Article
+  - Label: Article
+  
+13. Start up the local webserver running the next.js app
+
+Return to a command line terminal on your local machine (*NOT* the
+drupal9-next container terminal). This is where you ran
+`docker-compose up` earlier. You will need a second terminal window to
+run the next commands (assuming you are still in the `drupal9gcc` top
+level directory.
 
 `cd nextjs-gcc`
 `npm run dev`
@@ -85,7 +158,10 @@ try visiting http://localhost:3000 .
 You should see a basic page with at least one article. Clicking on
 that article title should show the content.
 
-You can find additional information about using next.js with Drual at
+You can stop the development server by entering Control-C on the
+terminal where you ran `npm run dev`.
+
+You can find additional information about using next.js with Drupal at
 https://next-drupal.org/docs
 
 

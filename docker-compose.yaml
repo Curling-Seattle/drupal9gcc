@@ -15,11 +15,9 @@ services:
       - mysqldata9:/var/lib/mysql
       
   drupal:
-    image: drupal-next
+    image: drupal:latest
     container_name: drupal9-next
     working_dir: /opt/drupal/web
-    build:
-      dockerfile: drupal-latest.Dockerfile
     ports:
       - "${GCC_DRUPAL_PORT:-8999}:80"
     env_file:

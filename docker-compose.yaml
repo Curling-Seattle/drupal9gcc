@@ -13,16 +13,19 @@ services:
     volumes:
       - ./.docker/db-load:/docker-entrypoint-initdb.d
       - mysqldata9:/var/lib/mysql
-  webserver:
-    image: drupalnextjs
-    container_name: curlingseattle9-webserver
-    working_dir: /var/www/html
+      
+  drupal:
+    image: drupal-next
+    container_name: drupal9-next
+    working_dir: /opt/drupal/web
+    build:
+      dockerfile: drupal-latest.Dockerfile
     ports:
-      - "${GCC_WEBSITE_PORT:-8999}:80"
+      - "${GCC_DRUPAL_PORT:-8999}:80"
     env_file:
       - .env
     volumes:
-      - ./webroot:/opt/drupal/web
+      - ./drupalwebroot:/opt/drupal/web
       - ./.docker/drupal.ini:/usr/local/etc/php/conf.d/drupal.ini
     networks:
       - app-network

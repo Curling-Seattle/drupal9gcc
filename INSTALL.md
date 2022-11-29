@@ -66,12 +66,16 @@ user on the `e45652ec6bcf` container and your directory is
 `/opt/drupal/web`. Regardless of the prompt enter the following commands:
 
 `cd /opt/drupal`
+
 `composer update "drupal/core-*" --with-all-dependencies`
 
-This will take a few minutes to load a bunch of Drupal code into
-the docker image and verify it.  The last line should be:
-`No security vulnerability advisories found`
-Open a browswer window to see the Drupal website, http://localhost:8999. 
+This will take a few minutes to load a bunch of Drupal code into the
+docker image and verify it (especially the drupal/core-recommended).
+If you get timeout errors, you can try repeating the command at a later
+time to finish the process.
+The last line should be: `No security vulnerability advisories found`
+Open a browswer window to see the Drupal website,
+http://localhost:8999.
 
 8. Connect the database
 

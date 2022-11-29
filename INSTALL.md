@@ -171,11 +171,18 @@ installed all the node packages used by next.js. Run this command:
 
 `npm install react react-dom next typescript @types/react @types/node @types/react-dom eslint eslint-config-next`
 
-When it finishes, retry the `npm run dev` command.
-When you see the `compiled client and server successfully` message,
-try visiting http://localhost:3000 .
-You should see a basic page with at least one article. Clicking on
-that article title should show the content.
+When it finishes, retry the `npm run dev` command.  When you see the
+`compiled client and server successfully` message, try visiting
+http://localhost:3000 .  You should see a basic page with the title
+"Latest Articles".  If it shows an article, you can select the article
+title to show its content. If you want to create an article, either follow
+"Drupal administration" link or visit http://localhost:8999 to return to
+the Drupal website. Select Content > + Add content > Article.
+Fill in the Title and Body of the Article. If you want to add an image,
+make the Text format "Full HTML" and drag and drop a PNG or JPG file in
+the Body. When you're done, select "Save". If you refresh the view in
+the next.js app browser (http://localhost:3000), you should see the
+article and be able to see any images added to it.
 
 You can stop the development server by entering Control-C on the
 terminal where you ran `npm run dev`.

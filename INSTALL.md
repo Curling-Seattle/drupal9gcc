@@ -70,7 +70,8 @@ user on the `e45652ec6bcf` container and your directory is
 `composer update "drupal/core-*" --with-all-dependencies`
 
 This will take a few minutes to load a bunch of Drupal code into the
-docker image and verify it (especially the drupal/core-recommended).
+docker image and verify it (especially the drupal/core stuff). You can
+safely ignore the warnings about not finding the unzip or 7z commands.
 If you get timeout errors, you can try repeating the command at a later
 time to finish the process.
 The last line should be: `No security vulnerability advisories found`
@@ -82,7 +83,7 @@ http://localhost:8999.
 On the localhost:8999 web page, you should see the initial
 adminstrative screen for a Drupal 9 instance.  The webpage walks you
 through a series of steps to configure the site. Configure the
-language as English and the profile as Standard. On the 'Set up
+language as English and the profile as Standard. If it asks on the 'Set up
 database' step, leave the database type as MySQL. Fill in the databse
 name, username, and password from the values in the `.env` file that
 you edited in an earlier step. These come from the MYSQL_DATABASE,
@@ -90,13 +91,20 @@ MYSQL_USER, and MYSQL_PASSWORD variables.  Select the 'ADVANCED
 OPTIONS` section and fill in the host from the MYSQL_HOST variable
 (don't use 'localhost'). Select 'Save and Continue'.
 
-At this point, you'll either get an error that Drupal could not
-connect to the database or a message that says 'Drupal already
-installed'. The latter means you are successful and can select 'View
-your existing site' to continue.  If you get the database error, check
-the values you entered for the database connection carefully. Any
-errors here will prevent using the pre-configured database. After
-correcting, try again.
+At this point, you'll either get a) an error that Drupal could not
+connect to the database, b) the Configure site dialog, or c) a message
+that says 'Drupal already installed'. The latter means you are
+successful and can select 'View your existing site' to continue.  If
+you get the database error, check the values you entered for the
+database connection carefully. Any errors here will prevent using the
+pre-configured database. After correcting, try again.
+If you get the Configure site dialog, go ahead and fill in these values:
+
+  - Site name: test.curlingseattle
+  - Site email address: info@test.curlingseattle
+  - Username: admin
+  - Password: _some password that you will remember_
+  - User email address: info@test.curlingseattle
 
 9. Install the next.js modules
 
@@ -153,10 +161,17 @@ run the next commands (assuming you are still in the `drupal9gcc` top
 level directory.
 
 `cd nextjs-gcc`
+
 `npm run dev`
 
 The development web server should start up and produce a bunch of
 messages about compiling the client and server javascript code.
+If you get an error about `next: command not found`, you probably have not
+installed all the node packages used by next.js. Run this command:
+
+`npm install react react-dom next typescript @types/react @types/node @types/react-dom eslint eslint-config-next`
+
+When it finishes, retry the `npm run dev` command.
 When you see the `compiled client and server successfully` message,
 try visiting http://localhost:3000 .
 You should see a basic page with at least one article. Clicking on

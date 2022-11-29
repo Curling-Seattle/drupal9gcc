@@ -1,0 +1,14 @@
+name: Next.js JWT (Experimental)
+type: module
+description: "Generates preview URLs using JSON Web Token"
+core_version_requirement: ^8.8 || ^9
+package: Web services
+dependencies:
+  - next:next
+  - jwt:jwt
+  - jwt:jwt_auth_consumer
+
+# Information added by Drupal.org packaging script on 2022-11-10
+version: '1.4.0'
+project: 'next'
+datestamp: 1668079685

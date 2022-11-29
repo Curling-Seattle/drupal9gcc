@@ -22,7 +22,6 @@ tmp/*
 
 # Ignore gzipped sql files so we don't accidentally commit a database to the git repo
 *.sql.gz
-*.sql
 
 # Don't commit env files
 .env

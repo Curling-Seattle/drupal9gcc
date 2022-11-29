@@ -1,96 +1,92 @@
 # Installing the Docker images and Initializing the Drupal Next.js system
 
-After cloning the repository
+To make the development environment work, three systems need to run:
 
-1. Change directory into the cloned repo: `cd drupal9gcc`
+	- A mysql database server (running in a Docker container)
+	- A Drupal web server (running in a second Docker container)
+	- A next.js web server running directly on your development machine
 
-2. Copy the sample environment file:
+This guide provides step by step instructions to set up all three systems.
 
-`cp env.sample .env`
+1. If you have not already done so, clone this `drupal9gcc` repository
+to your development machine.
+
+`git clone git@github.com:Curling-Seattle/drupal9gcc` (if you're using SSH)
+
+2. Install `node.js` on your development machine. This is needed to run the
+next.js web server.
+
+See https://nodejs.org/en/download/
+
+3. Install Docker Desktop on your development machine. Docker runs
+containers for Drupal and the database. The Docker Desktop provides a GUI
+for managing the containers, images, and volumes. There are also command
+line tools for performing those operations.
+
+https://www.docker.com/
+
+4. Change directory into the cloned repo: `cd drupal9gcc`
+
+5. Copy the sample Drupal environment file: `cp env.sample .env`
 
 You may edit this file later.
 
-3. Build the docker image with Drupal and Next.js
-
-`docker build -t drupalnextjs:latest -f drupalnextjs.dockerfile .`
-
-This will construct a Docker image on your machine using the latest version
-of Drupal and a version of Next.js.  The image is called drupalnextjs.
-
-4. Start the docker envrionment for the development website
+6. Start the docker envrionment for the development website
 
 `docker-compose up`
 
 This command fetches Docker images from the Internet (if needed),
 caches local copies on your machine, and then runs them inside
 containers.  It will take significantly more time the first time it is
-run.  The database is run in a separate container from the web server
-and stores its content in locally cached volume.  The first time you
-run `docker-compose`, the database will be initialized with an empty
-Drupal 9 structure.  The database will have a `root` and `gccsqluser`
-account created.  The `gccsqluser` password is defined in the `.env`
-file.  The `root` account gets a random password. In the stream of
-messages that docker prints out, it will show you the root password.
-Look for a sequence of lines like these:
+run.  The database is run in a separate container from the Drupal web
+server and stores its content in locally cached volume.  The first
+time you run `docker-compose`, the database will be initialized with a
+nearly empty Drupal 9 structure.  The database will have a `root` and
+`gccsqluser` account created.  The passwords for those accounts are
+defined in the `.env` file. The values must match what was stored in
+the database snapshot stored in the `.docker/db-load/drupal9gcc-dump.sql`
+file.
 
-```
-curlingseattle9-db         | 2022-09-18 21:51:35+00:00 [Note] [Entrypoint]: GENERATED ROOT PASSWORD: /8ICe0JWKczLahqbUSD9vpUqUo/FudK8
-curlingseattle9-db         | 2022-09-18 21:51:35+00:00 [Note] [Entrypoint]: Creating database drupal9gcc
-curlingseattle9-db         | 2022-09-18 21:51:35+00:00 [Note] [Entrypoint]: Creating user gccsqluser
-curlingseattle9-db         | 2022-09-18 21:51:35+00:00 [Note] [Entrypoint]: Giving user gccsqluser access to schema drupal9gcc
-```
+For security, you should change the passwords for those accounts on your
+develpment machine.
 
-It's a good idea to copy the generated root password into your `.env`
-file for later use.  There's a placeholder for it in the
-`GCC_MYSQL_ROOT_PASSWORD` variable.  The `.env` is ignored by git and
-will not be stored in the public repository.
-
-4. Browse http://localhost:8999
+7. Browse the Drupal website, http://localhost:8999
 
 You should see the initial adminstrative screen for a Drupal 9 instance.
 (Note you can change the port number used on your local machine by
 editing the `GCC_WEBSITE_PORT` variable in the `.env` file before running
 `docker-compose up`).
 
-5. Set up the admin user password
+8. Set up the Drupal admin user password
 
-You can either select Menu > My Account > Edit or browse
-http://localhost:8999/user/1/edit In the form, you can change the
-admin account's password to something you'll remember.  The password
-was initialized to `slowplaysucks` and you'll need that to make your
-update.  Press the Save button at the bottom of the form.
+Select Menu > Login, and login as the Drupal admin user.  The initial
+password for the admin account was set to `slowplaysucks`.  To update
+the password, select My Account > Edit or browse
+http://localhost:8999/user/1/edit . In the form, you can change the
+admin account's password to something more convenient.  Press the Save
+button at the bottom of the form.
 
-6. Enable the Next.js modules
+9. The Drupal instance has already been configured with the Next.js
+and Next.js JSON:API modules. You can verify this by visiting
+http://localhost:8999/admin/modules and entering 'next' in the Filter box.
+An `Article` content type has been configured in Drupal so that the
+next.js app can find it. You can verify its settings by visiting
+http://localhost:8888/admin/config/search/path/patterns .
 
-Browse http://localhost:8999/admin/modules to find all the current
-modules and whether they are enabled or not.  Scroll down near the
-bottom to find the Web services section and enable the `Next.js` and
-`Next.js JSON:API` services.  Press the Install button at the bottom
-of the form. It will ask you to confirm enabling some dependencies.
-Approve those by pressing the Continue button. This will take a
-little while to process.  You should get the same page of modules
-listed with the Next.js and dependencies now enabled.
+10. Start up the local webserver running the next.js app
 
-7. Configure a path alias for Next.js 
+`cd nextjs-gcc`
+`npm run dev`
 
-Follow the instructions starting at
-https://next-drupal.org/learn/quick-start/configure-path-aliases
-(we've already done the preceding steps in the Docker image).
-Where it says "Visit /admin/config/search/path/patterns/add", browse
-http://localhost:8999/admin/config/search/path/patterns/add
+The development web server should start up and produce a bunch of
+messages about compiling the client and server javascript code.
+When you see the `compiled client and server successfully` message,
+try visiting http://localhost:3000 .
+You should see a basic page with at least one article. Clicking on
+that article title should show the content.
 
-8. Create the Next.js project
-
-This is the next step after configuring a path alias,
-https://next-drupal.org/learn/quick-start/create-nexts-project.  You
-need to execute this command in the running Docker image.  If you use
-Docker Desktop, find the `drupal9gcc` parent container and the
-`curlingseattle9-webserver` within it.  In the ACTIONS column, click
-on the vertical ellipsis symbol (looks a bit like ☰) and use the Open
-in terminal function to bring up a command line interpreter.  When you
-run `npx create-next-app -e
-https://github.com/chapter-three/next-drupal-basic-starter`, it will
-ask you to confirm the installation of the create-next-app package.
+You can find additional information about using next.js with Drual at
+https://next-drupal.org/docs
 
 
 

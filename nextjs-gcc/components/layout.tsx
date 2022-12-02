@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 
 import { PreviewAlert } from "components/preview-alert"
 
@@ -10,9 +11,10 @@ export function Layout({ children }) {
         <header>
           <div className="container flex items-center justify-between py-6 mx-auto">
             <Link href="/" passHref>
-              <a className="text-2xl font-semibold no-underline">
-                Granite Curling Club of Seattle
-              </a>
+	      <Image priority src="/graphics/GCC_Banner2.png"
+                     className="header-logo" width={175} height={20}
+		     alt="Granite Curling Club of Seattle"
+              />
             </Link>
             <Link href="http://localhost:8999" passHref>
               <a target="_blank" rel="external" className="hover:text-blue-600">

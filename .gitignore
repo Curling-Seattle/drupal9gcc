@@ -28,3 +28,7 @@ tmp/*
 
 # Avoid auto-generated files from Drupal activity
 drupalwebroot/sites/default/files
+
+# Avoid auto-generated files from node.js and next.js activity
+.next
+node_modules

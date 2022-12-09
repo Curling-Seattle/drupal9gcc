@@ -11,10 +11,12 @@ export function Layout({ children }) {
         <header>
           <div className="container flex items-center justify-between py-6 mx-auto">
             <Link href="/" passHref>
-	      <Image priority src="/graphics/GCC_Banner2.png"
-                     className="header-logo" width={175} height={20}
-		     alt="Granite Curling Club of Seattle"
-              />
+              <a target="_blank" className="hover:bg-gray-100">
+	        <Image priority src="/graphics/GCC_Banner2.png"
+                       className="header-logo" width={175} height={20}
+		       alt="Granite Curling Club of Seattle"
+                 />
+              </a>
             </Link>
             <Link href="http://localhost:8999" passHref>
               <a target="_blank" rel="external" className="hover:text-blue-600">

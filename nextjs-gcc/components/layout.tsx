@@ -1,5 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
+import styles from './layout.module.css'
 
 import { PreviewAlert } from "components/preview-alert"
 
@@ -19,7 +20,7 @@ export function Layout({ children }) {
               </a>
             </Link>
             <Link href="http://localhost:8999" passHref>
-              <a target="_blank" rel="external" className="hover:text-blue-600">
+              <a target="_blank" rel="external" className="adminlink">
                 Drupal administration
               </a>
             </Link>

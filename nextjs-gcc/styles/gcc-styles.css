@@ -1,0 +1,9 @@
+.adminlink {
+    color:	green;
+    font-size:	small;
+    font-style:	italic;
+}
+
+.adminlink:hover {
+    color:	blue;
+}

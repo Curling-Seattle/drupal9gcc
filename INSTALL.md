@@ -25,7 +25,8 @@ line tools for performing those operations.
 
 https://www.docker.com/
 
-4. Change directory into the cloned repo: `cd drupal9gcc`
+4. In a terminal window running on your development machine,
+change directory into the cloned repo: `cd drupal9gcc`
 
 5. Copy the sample Drupal environment file: `cp env.sample .env`
 

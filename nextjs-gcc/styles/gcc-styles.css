@@ -7,3 +7,11 @@
 .adminlink:hover {
     color:	blue;
 }
+
+.footercolumn {
+    color:	white;
+}
+
+footer {
+    background: red;
+}    

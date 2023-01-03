@@ -70,12 +70,24 @@ user on the `e45652ec6bcf` container and your directory is
 
 `composer update "drupal/core-*" --with-all-dependencies`
 
-This will take a few minutes to load a bunch of Drupal code into the
-docker image and verify it (especially the drupal/core stuff). You can
+This might take a few minutes while it loads a bunch of Drupal code into the
+docker image and verifies it (especially the drupal/core stuff). You can
 safely ignore the warnings about not finding the unzip or 7z commands.
 If you get timeout errors, you can try repeating the command at a later
 time to finish the process.
 The last line should be: `No security vulnerability advisories found`
+
+With the Drupal core installed, add the modules needed for using next.js
+with Drupal. Run
+
+`composer require drupal/next`
+
+It will ask if you trust "cweagans/composer-patches" to execute code.
+Answer yes. It may warn about some abandoned (deprecated) packages,
+which you can safely ignore. It should end with the message 
+`No security vulnerability advisories found`
+like the previous composer command did.
+
 Open a browswer window to see the Drupal website,
 http://localhost:8999.
 
@@ -107,30 +119,20 @@ If you get the Configure site dialog, go ahead and fill in these values:
   - Password: _some password that you will remember_
   - User email address: info@test.curlingseattle
 
-9. Install the next.js modules
+9. Set up the Drupal admin user password
 
-Go back to the Docker Desktop and specifically to the command line
-terminal for the `drupal9-next` container. Run the following command:
-
-`composer require drupal/next`
-
-It will ask if you trust "cweagans/composer-patches" to execute code.
-Answer yes. It may warn about some abandoned packages, which you can
-safely ignore. It should end with the message 
-`No security vulnerability advisories found`
-like the previous composer command did.
-
-10. Set up the Drupal admin user password
-
-Return to the localhost:8999 web page.
+If you didn't set a password in the previous step because it found
+that Drupal was already installed, then the password for the admin
+account was set to `slowplaysucks`. If you want to change that,
+return to the localhost:8999 web page.
 Select Menu > Login, and login as the Drupal admin user.  The initial
-password for the admin account was set to `slowplaysucks`.  To update
+  To update
 the password, select My Account > Edit or browse
 http://localhost:8999/user/1/edit . In the form, you can change the
 admin account's password to something more convenient.  Press the Save
 button at the bottom of the form.
 
-11. Enable the Next.js modules
+10. Enable the Next.js modules
 
 Visit the page the Drupal modules page at
 http://localhost:8999/admin/modules (or Go to Extend > List in the
@@ -142,18 +144,18 @@ you that some required modules must be enabled. Select
 "Continue". This can take a few minutes, but you should get a message
 saying the 2 Next.js modules plus some others were enabled.
 
-12. Configure an Article content type
+11. Configure an Article content type
 
 Visit http://localhost:8999/admin/config/search/path/patterns (or use
 the menus Configuration > Search and metadata > URL aliases > Patterns).
 Select '+ Add Pathauto pattern'. Add the following patern:
 
   - Pattern type: Content
-  - Path pattern: blog/[node:title]
+  - Path pattern: `blog/[node:title]`
   - Content type: Article
   - Label: Article
   
-13. Start up the local webserver running the next.js app
+12. Start up the local webserver running the next.js app
 
 Return to a command line terminal on your local machine (*NOT* the
 drupal9-next container terminal). This is where you ran

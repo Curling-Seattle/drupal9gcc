@@ -88,7 +88,7 @@ which you can safely ignore. It should end with the message
 `No security vulnerability advisories found`
 like the previous composer command did.
 
-Open a browswer window to see the Drupal website,
+Open a browser window to see the Drupal website,
 http://localhost:8999.
 
 8. Connect the database
